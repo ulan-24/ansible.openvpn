@@ -1,4 +1,4 @@
-# OpenVPN LDAP Deploy
+# Overview
 Ansible Playbook for deploying OpenVPN on Ubuntu and Arch Hosts with LDAP authentication support.
 
 ### Requirements
