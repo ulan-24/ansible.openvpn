@@ -1,29 +1,64 @@
 ---
-# server Info
-domain: caleb.me
-server_name: server_name
-remote: server_ip
+# server info
+domain: example.net
 proto: tcp # udp / tcp
-server_port: 8081  # 443/ 80 / 1194 etc.
+server_port: 1194  # 443/ 80 / 1194 etc.
 dev:  tun  # tun, tap
-# Cert Info
-key_country: United Kingdom
-key_province: London
-key_city: London
-key_org: Hive Eleven
-key_email: iamcaleberic@tuta.io
-key_cn:  HE Networks # common name
-key_altnames: Hive Network
-key_name: Hive
-key_ou: Hive Eleven Engineering
+org: exampleorg
+server_home: '/etc/openvpn'
+# server config
+vpn_cipher: "AES-256-CBC"
+vpn_auth: "SHA512"
+vpn_tls_server: "tls-server"
+vpn_tls_version_min: 1.2
+vpn_tls_cipher: "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-256-CBC-SHA:TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA:TLS-DHE-RSA-WITH-AES-128-CBC-SHA:TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA"
+vpn_script_security: 2
+vpn_update_resolve: "{{ server_home }}/scripts/openvpn-update-resolv-conf.sh"
+vpn_max_clients: 20
+vpn_tcp_queue_limit: 256
+vpn_enable_management_interface: false
+# LDAP
+vpn_enable_ldap: true
+ldap_timeout: 15
+ldap_enable_tls: yes
+ldap_follow_referral: yes
+ldap_tls_ca_cert: "/etc/ssl/certs/ca-certificates.crt"
+ldap_user_base_dn: "ou=People,dc=example,dc=net"
+ldap_user_filter: '(&(uid=%u)(openvpnEnabled=TRUE))'
+ldap_require_group: true
+ldap_group_match_full_dn: true
+ldap_group_base_dn: "ou=Groups,dc=example,dc=net"
+ldap_group_filter: '(cn=vpn-users)'
+ldap_member_attribute: 'member'
+# logs
+vpn_status_log: "/var/log/openvpn/openvpn-status.log"
+vpn_log: "/var/log/openvpn/openvpn.log"
+vpn_verb: 4 # reasonable for general usage
+# cert info
+key_country: US
+key_province: California
+key_city: San Francisco
+key_org: ExampleOrg
+key_email: vpn@example.email
+key_cn: "{{ server_name }}" # common name
+key_altnames: My Org VPN Network
+key_name: "{{ server_name }}"
+key_ou: ExampleOrg VPN
 key_size: 2048 # 2048 / 4096
-cert_expire: 360 # expire certs in?
-ca_expire: 360 # expire root CA ?
-algorithim: rsa # ec / rsa
-# Client
+cert_expire: 3650 # expire certs in?
+ca_expire: 3650 # expire root CA ?
+algorithm: rsa # ec / rsa
+# easy-rsa
+ca_dir: "/etc/easy-rsa"
+server_key: "{{ ca_dir }}/pki/private/{{ server_name }}.key"
+transfer_ca_cert_alt_hosts: false   # if using more than one OpenVN host
+# network (default: ufw)
+iptables_enable: False
+ufw_enable: True
+# client
+client_enable: false
 client_name: vpn
 # DNS
-dns_one: 8.8.8.8
-dns_two: 8.8.4.4
-# certs directory
-ca_dir: "/etc/easy_rsa"
+push_dns:
+  - 208.67.222.222
+  - 208.67.220.220

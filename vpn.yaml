@@ -1,12 +1,15 @@
 ---
-- name: Ansible Playbook for deploying OpenVPN on Ubuntu and Arch Host(s)
+- name: OpenVPN deploy on Ubuntu and Arch Hosts
   hosts: vpn
-  # remote_user: vpn_user
+  remote_user: root
   become: true
-  become_method: sudo
-  become_user: root
+  pre_tasks:
+    - { include: tasks/main.yml }
   roles:
-    - openvpn
-    - easy-rsa
-    - network
-    - client
+    - { role: openvpn, tags: [ 'openvpn' ] }
+    - { role: easy-rsa, tags: [ 'rsa' ] }
+    - { role: network, tags: [ 'network' ] }
+    - { role: client, when: client_enable, tags: [ 'client' ] }
+
+  post_tasks:
+    - { include: tasks/post.yml }

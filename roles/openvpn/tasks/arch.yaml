@@ -1,12 +1,55 @@
-- name: Install openvpn
+---
+- name: Install OpenVPN
   pacman:
     name: openvpn
     state: present
     update_cache: true
 
-- name: Add openvpn server Config
-  template:
-    src: server.conf.j2
-    dest: /etc/openvpn/server/server.conf
+- name: Ensure OpenVPN directories have proper permissions
+  file:
+    path: "{{ item }}"
+    recurse: no
+    state: directory
+    owner: root
+    group: network
+    mode: '0750'
+  with_items:
+    - "{{ server_home }}"
+    - "{{ server_home }}/server"
+
+- name: Ensure remaining directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
     owner: root
     group: root
+  with_items:
+    - "{{ server_home }}/{{ org }}"
+    - "{{ server_home }}/scripts"
+
+- name: Add OpenVPN server config
+  template:
+    src: server.conf.j2
+    dest: "{{ server_home }}/server/server.conf"
+    owner: root
+    group: root
+    backup: yes
+  notify: restart OpenVPN
+  tags: [vpnconfig]
+
+- name: Add resolve-conf update script
+  copy:
+    src: 'openvpn-update-resolv-conf.sh'
+    dest: '/etc/openvpn/scripts/openvpn-update-resolv-conf.sh'
+    mode: a+x
+
+- name: Copy OpenVPN systemd service file
+  template:
+    src: "openvpn-server@.service.j2"
+    dest: "/etc/systemd/system/openvpn-server@.service"
+  notify: reload systemd daemon
+
+- include: ldap.yml
+  when: vpn_enable_ldap 
+  tags: [ldap]

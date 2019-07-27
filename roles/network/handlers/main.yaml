@@ -1,5 +1,18 @@
-- name: Start OpenVPN Network
+---
+- name: start OpenVPN Network
   systemd:
-    name: openvpn
+    name: openvpn-server@server
     state: started
     enabled: True
+
+- name: start ufw
+  systemd:
+    name: ufw
+    enabled: yes
+    state: started
+
+- name: restart ufw
+  systemd:
+    name: ufw
+    enabled: yes
+    state: restarted

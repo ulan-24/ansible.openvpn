@@ -1,37 +1,106 @@
-- name: Install easyrsa and bash
+---
+- name: Install EasyRSA
   pacman:
-    name: easy-rsa, bash
+    name: easy-rsa
     state: present
     update_cache: true
 
-
-- name: Add Certicate Variables
+- name: Load X509 certificate variables
   template:
     src: vars-arch.j2
-    dest: "{{ ca_dir }}"/vars
+    dest: '{{ ca_dir }}/vars'
     owner: root
     group: root
 
-- name: Initialize the PKI dir for a clean PKI
-  shell: easyrsa --vars=./vars --batch init-pki
-  args:
-    chdir: "{{ ca_dir }}"
-    executable: /bin/bash
+- name: Ensure PKI directory exists
+  stat:
+    path: '{{ ca_dir }}/pki'
+  register: pki_result
+  changed_when: false
 
-- name: Generate the Certificate Authority(CA)
-  shell: easyrsa --vars=./vars --batch build-ca nopass && cp {{ ca_dir }}/pki/ca.crt /etc/openvpn/server/
+- name: Initialize PKI for a clean PKI directory
+# shell: easyrsa --vars=./vars --batch init-pki
+  shell: echo 'yes' | easyrsa --batch init-pki
   args:
-    chdir: "{{ ca_dir }}"
-    executable: /bin/bash
+    chdir: '{{ ca_dir }}'
+    creates: '{{ ca_dir }}/pki'
+  when: pki_result.stat.exists == false
 
-- name: Generate Server certificate and Private key
-  shell: easyrsa --vars=./vars --batch build-server-full {{ server_name }} nopass && cp {{ ca_dir }}/pki/private/{{ server_name }}.key {{ ca_dir }}/pki/issued/{{ server_name }}.crt /etc/openvpn/server/
-  args:
-    chdir: "{{ ca_dir }}"
-    executable: /bin/bash
+- name: Generate CA password
+  shell: echo "$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c30)"
+  no_log: true
+  register: ca_pass_result
+  changed_when: false
+  when: (ca_pass is not defined) and (pki_result.stat.exists == false)
+
+- name: Set CA password variable
+  set_fact:
+    ca_pass: "{{ ca_pass_result.stdout }}"
+  changed_when: false
+  when: (ca_pass is not defined) and (pki_result.stat.exists == false)
+
+- name: Generate Certificate Authority (CA)
+  environment:
+    EASYRSA: $(pwd)
+  expect:
+    command: easyrsa --vars=./vars --batch build-ca
+    responses:
+      Enter New CA Key Passphrase: '{{ ca_pass }}'
+      Verify New CA Key Passphrase: '{{ ca_pass }}'
+    chdir: '{{ ca_dir }}'
+    creates: '{{ ca_dir }}/pki/ca.crt'
+  when: (inventory_hostname in groups['vpn_primary']) and (pki_result.stat.exists == false)
+
+- name: Copy Certificate Authority (CA) to {{ server_home }}/{{ org }}
+  copy:
+    src: "{{ ca_dir }}/pki/ca.crt"
+    dest: "{{ server_home }}/{{ org }}/ca.crt"
+    remote_src: yes
+    mode: '0600'
+
+- name: Transfer CA certificate to alt VPN hosts
+  include: remote.yaml
+  when: transfer_ca_cert_alt_hosts
+
+- name: Check if server certificate and private keypair exist
+  stat:
+    path: "{{ item }}"
+  with_items:
+    - "{{ server_key }}"
+    - "{{ ca_dir }}/pki/issued/{{ server_name }}.crt"
+  register: certpair
+
+- name: Generate OpenVPN server certificate and private key
+  environment:
+    EASYRSA: $(pwd)
+  expect:
+    command: easyrsa --batch build-server-full {{ server_name }} nopass
+    responses:
+      'Enter pass phrase for .*?:$': '{{ ca_pass }}'
+    chdir: '{{ ca_dir }}'
+    creates: '{{ ca_dir }}/pki/issued/{{ server_name }}.crt'
+  ignore_errors: true
+  when: pki_result.stat.exists == false
+
+- name: Copy OpenVPN server certificate to {{ server_home }}/{{ org }}
+  copy:
+    src: "{{ ca_dir }}/pki/issued/{{ server_name }}.crt"
+    dest: "{{ server_home }}/{{ org }}/{{ server_name }}.crt"
+    remote_src: yes
+    mode: '0600'
 
 - name: Generate Diffie-Hellman (DH) parameters file
-  command: openssl dhparam -out /etc/openvpn/server/dh.pem 2048
+  command: openssl dhparam -out {{ server_home }}/{{ org }}/dh.pem {{ key_size }}
+  args:
+    creates: '{{ server_home }}/{{ org }}/dh.pem'
 
 - name: Generate Hash-based Message Authentication Code (HMAC) key
-  command: openvpn --genkey --secret /etc/openvpn/server/ta.key
+  command: openvpn --genkey --secret {{ server_home }}/{{ org }}/ta.key
+  args:
+    creates: '{{ server_home }}/{{ org }}/ta.key'
+
+- name: New Certificate Authority (CA) passphrase
+  debug:
+    msg: "{{ ca_pass }}"
+  ignore_errors: true
+  when: pki_result.stat.exists == false

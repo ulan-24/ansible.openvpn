@@ -47,7 +47,7 @@ fi
 # itself, which is also where the configuration files are located in the
 # easy-rsa tree.
 
-set_var EASYRSA `pwd`
+set_var EASYRSA "${0%/*}"
 
 # If your OpenSSL command is not in the system PATH, you will need to define the
 # path to it here. Normally this means a full path to the executable, otherwise
@@ -109,7 +109,7 @@ set_var EASYRSA_KEY_SIZE	{{ key_size }}
 #  * rsa
 #  * ec
 
-set_var EASYRSA_ALGO	{{ algorithim }}
+set_var EASYRSA_ALGO	{{ algorithm }}
 
 # Define the named curve, used in ec mode only:
 

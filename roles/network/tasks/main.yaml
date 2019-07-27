@@ -1,8 +1,12 @@
-- name: Enable NAT forwarding
-  iptables:
-    chain: POSTROUTING
-    table: nat
-    source: 10.8.0.0/24
-    jump: MASQUERADE
-    out_interface: eth0
-  notify: Start OpenVPN Network
+---
+- name: Enable IPv4 traffic forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+
+- include: iptables.yaml
+  when: (iptables_enable) and (ufw_enable == False)
+  ignore_errors: True
+
+- include: ufw.yaml
+  when: (ufw_enable) and (iptables_enable == False)
