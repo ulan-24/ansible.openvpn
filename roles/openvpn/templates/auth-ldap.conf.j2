@@ -1,0 +1,63 @@
+# {{ ansible_managed }}
+<LDAP>
+	# LDAP server URL
+	URL		ldap://{{ ldap_host }}.{{ domain }}
+
+	# Bind DN (If your LDAP server doesn't support anonymous binds)
+	# BindDN		uid=Manager,ou=People,dc=example,dc=com
+
+	# Bind Password
+	# Password	SecretPassword
+
+	# Network timeout (in seconds)
+	Timeout		15
+
+	# Enable Start TLS
+	TLSEnable	yes
+
+	# Follow LDAP Referrals (anonymously)
+	FollowReferrals yes
+
+	# TLS CA Certificate File
+	TLSCACertFile	{{ ldap_tls_ca_cert }}
+
+	# TLS CA Certificate Directory
+	TLSCACertDir	/etc/ssl/certs
+
+	# Client Certificate and key
+	# If TLS client authentication is required
+	#TLSCertFile	/usr/local/etc/ssl/client-cert.pem
+	#TLSKeyFile	/usr/local/etc/ssl/client-key.pem
+
+	# Cipher Suite
+	# The defaults are usually fine here
+	# TLSCipherSuite	ALL:!ADH:@STRENGTH
+</LDAP>
+
+<Authorization>
+	# Base DN
+	BaseDN		"{{ ldap_user_base_dn }}"
+
+	# User Search Filter
+	SearchFilter	"{{ ldap_user_filter }}"
+
+	# Require Group Membership
+	RequireGroup	{{ ldap_require_group }}
+
+	# Add non-group members to a PF table (disabled)
+	#PFTable	ips_vpn_users
+
+# Uncomment and set to true to support OpenVPN Challenge/Response
+  PasswordIsCR  false
+
+	<Group>
+		# Match full user DN if true, uid only if false
+        	RFC2307bis	{{ ldap_group_match_full_dn }}
+
+		BaseDN		"{{ ldap_group_base_dn }}"
+		SearchFilter	"{{ ldap_group_filter }}"
+		MemberAttribute	{{ ldap_member_attribute }}
+		# Add group members to a PF table (disabled)
+		#PFTable	ips_vpn_eng
+	</Group>
+</Authorization>

@@ -1,0 +1,19 @@
+---
+- name: Enable NAT forwarding
+  iptables:
+    chain: POSTROUTING
+    table: nat
+    source: '{{ server.split(" ")[0] }}/24'
+    jump: MASQUERADE
+    out_interface: eth0
+  notify: start OpenVPN Network
+
+- name: Ensure {{ proto }} port {{ server_port }} is forwarded
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: "{{ port }}"
+    ctstate: NEW
+    syn: match
+    jump: ACCEPT
+    comment: Accept new OpenVPN connections.

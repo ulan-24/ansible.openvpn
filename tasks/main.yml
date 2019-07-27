@@ -1,0 +1,2 @@
+---
+- { include: aur.yml, ignore_errors: yes }

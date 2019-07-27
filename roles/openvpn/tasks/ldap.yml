@@ -1,0 +1,29 @@
+---
+- name: Install OpenVPN LDAP auth
+  become: yes
+  become_user: aur_builder
+  aur: name=openvpn-auth-ldap skip_installed=true
+  notify: restart openvpn
+
+- name: Ensure LDAP auth directory exists
+  file:
+    path: "{{ server_home }}/auth"
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+
+- name: Add OpenVPN LDAP server config
+  template:
+    src: auth-ldap.conf.j2
+    dest: "{{ server_home }}/auth/auth-ldap.conf"
+    owner: root
+    group: root
+    mode: '0640'
+    backup: yes
+
+- name: Ensure default installed auth-ldap.conf does not exist
+  file:
+    path: "{{ server_home }}/server/auth-ldap.conf"
+    state: absent
+  ignore_errors: yes

@@ -1,0 +1,12 @@
+[vpn]
+primary_host 
+secondary_host 
+
+[vpn_primary]
+primary_host
+
+[vpn_backup]
+secondary_host
+
+[vpn:vars]
+ansible_python_interpreter=/usr/bin/python2

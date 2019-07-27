@@ -1,0 +1,34 @@
+---
+- name: Ensure UFW is installed for traffic management
+  pacman:
+    name: ufw
+    state: present
+    update_cache: yes
+
+- name: Ensure UFW is enabled
+  systemd:
+    name: ufw
+    enabled: yes
+    masked: no
+    state: started
+
+- name: Ensure default forward policy is ACCEPT
+  lineinfile:
+    path: /etc/default/ufw
+    regexp: '^DEFAULT_FORWARD_POLICY='
+    line: 'DEFAULT_FORWARD_POLICY="ACCEPT"'
+  notify: restart ufw
+  
+- name: Ensure UFW before.rules is configured for NAT forwarding
+  blockinfile:
+    path: /etc/ufw/before.rules
+    block: "{{ lookup('template', 'ufw-before.txt.j2') }}"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK: NAT"
+    insertbefore: "^# Don't delete these required lines"
+  notify: restart ufw
+
+- name: Ensure OpenVPN {{ proto }} port 1194 is open
+  ufw:
+    rule: allow
+    port: "{{ server_port }}"
+    proto: "{{ proto }}"

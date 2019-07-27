@@ -1,0 +1,27 @@
+---
+- name: Stage CA cert locally
+  fetch:
+    src: '{{ server_home }}/{{ org }}/ca.crt'
+    dest: '/tmp/ca.crt'
+    flat: true
+  changed_when: false
+  ignore_errors: true
+  when: inventory_hostname in groups['vpn_primary']
+
+- name: Transfer staged CA cert to remote OpenVPN backup hosts
+  copy:
+    src: '/tmp/ca.crt'
+    dest: '{{ server_home }}/{{ org }}/ca.crt'
+    mode: '0600'
+    force: no
+  ignore_errors: true
+  when: inventory_hostname in groups['vpn_backup']
+
+- name: Remove locally staged ca.crt
+  file:
+    path: '/tmp/ca.crt'
+    state: absent
+    force: no
+  ignore_errors: true
+  changed_when: false
+  delegate_to: localhost

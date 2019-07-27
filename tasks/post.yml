@@ -1,0 +1,7 @@
+---
+- name: Certificate Authority (CA) passphrase
+  debug:
+    msg:
+      - "IMPORTANT: Be sure to store the new CA passphrase in a password manager like KeePass!"
+      - "Passphrase: {{ ca_pass }}"
+  when: pki_result.stat.exists == false

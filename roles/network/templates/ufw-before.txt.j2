@@ -1,0 +1,9 @@
+# NAT (Network Address Translation) table rules
+*nat
+:POSTROUTING ACCEPT [0:0]
+
+# Allow traffic from clients to enp1s0
+-A POSTROUTING -s {{ server.split(" ")[0] }}/24 -o eth0 -j MASQUERADE
+
+# don't delete the "COMMIT" line or the NAT table rules above won't be processed
+COMMIT

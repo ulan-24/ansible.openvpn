@@ -1,0 +1,8 @@
+---
+server_name: primary
+server: 10.8.0.0 255.255.255.0
+remote: ip/host
+push_routes:
+  - 192.168.x.0 255.255.128.0
+  - 10.8.0.0 255.255.255.0
+ldap_host: ldap
