@@ -60,10 +60,6 @@
   ignore_errors: yes
   when: inventory_hostname in groups['vpn_primary']
 
-- name: Transfer CA certificate to alt VPN hosts
-  include: remote.yaml
-  when: transfer_ca_cert_alt_hosts
-
 - name: Check if server certificate and private keypair exist
   stat:
     path: "{{ item }}"
@@ -100,6 +96,10 @@
   command: openvpn --genkey --secret {{ server_home }}/{{ org }}/ta.key
   args:
     creates: '{{ server_home }}/{{ org }}/ta.key'
+
+- name: Transfer CA certificate and HMAC key to alt/backup VPN hosts
+  include: remote.yaml
+  when: transfer_to_alt_hosts
 
 - name: New Certificate Authority (CA) passphrase
   debug:
