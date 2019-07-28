@@ -78,7 +78,7 @@
     chdir: '{{ ca_dir }}'
     creates: '{{ ca_dir }}/pki/issued/{{ server_name }}.crt'
   ignore_errors: true
-  when: pki_result.stat.exists == false
+  when: certpair.stat.exists == false
 
 - name: Copy OpenVPN server certificate to {{ server_home }}/{{ org }}
   copy:
