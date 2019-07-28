@@ -45,7 +45,7 @@ Ansible Playbook for deploying OpenVPN on Ubuntu and Arch Hosts with LDAP authen
 
 - Execute specifc role(s)
   
-  `ansible-playbook [options] --tags "vpn_config" vpn.yaml`
+  `ansible-playbook [options] --tags "openvpn,rsa" vpn.yaml`
 
 - Exclude a role
 
