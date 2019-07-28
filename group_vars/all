@@ -15,7 +15,8 @@ vpn_tls_cipher: "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-128-GC
 vpn_script_security: 2
 vpn_update_resolve: "{{ server_home }}/scripts/openvpn-update-resolv-conf.sh"
 vpn_max_clients: 20
-vpn_tcp_queue_limit: 256
+vpn_tcp_queue_limit: 4096
+vpn_bcast_buffers: 4096
 vpn_enable_management_interface: false
 # LDAP
 vpn_enable_ldap: true
