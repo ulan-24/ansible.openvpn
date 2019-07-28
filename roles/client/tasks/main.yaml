@@ -1,6 +1,5 @@
-- name: Create intial client
-  include_tasks: arch.yaml
-  when: ansible_os_family|lower == 'archlinux'
+- include_tasks: arch.yaml
+  when: (ansible_os_family|lower == 'archlinux') and (inventory_hostname in groups['vpn_primary'])
 
 - include_tasks: ubuntu.yaml
   when: ansible_os_family|lower == 'debian'
