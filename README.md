@@ -67,4 +67,3 @@ By default this Playbook uses LDAP auth rather than certificate based authentica
 ### TODO
 - MFA/YubiKey support
 - Handle more OS families
-- Handle `update-systemd-resolved` for unix clients
