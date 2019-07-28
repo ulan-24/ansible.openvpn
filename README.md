@@ -2,7 +2,7 @@
 Ansible Playbook for deploying OpenVPN on Ubuntu and Arch Hosts with LDAP authentication support.
 
 ### Requirements
-- Ansible >= 2.4
+- Ansible <= 2.6
 
 ### Roles (in order of Execution)
 - **openvpn**
