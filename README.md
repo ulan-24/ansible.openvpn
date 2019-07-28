@@ -14,8 +14,8 @@ Ansible Playbook for deploying OpenVPN on Ubuntu and Arch Hosts with LDAP authen
   - Pushes OpenDNS for client configuration
 
 - **easy-rsa**
-  - Certificate Authority and random generated passphrase
-  - OpenVPN server certificate and private key
+  - Certificate Authority and random generated passphrase (default expiration: 10 years)
+  - OpenVPN server certificate and private key (default expiration: 10 years)
   - Diffie-Hellman (DH) parameters key
   - Hash-based Message Authentication Code (HMAC) key
   - **Optional**: transfer CA cert and HMAC key to other secondary/backup OpenVPN host(s)
