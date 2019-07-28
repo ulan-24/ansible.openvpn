@@ -1,5 +1,5 @@
 ---
-- name: start OpenVPN Network
+- name: start openvpn
   systemd:
     name: openvpn-server@server
     state: started

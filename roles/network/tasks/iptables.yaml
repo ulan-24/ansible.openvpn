@@ -6,7 +6,7 @@
     source: '{{ server.split(" ")[0] }}/24'
     jump: MASQUERADE
     out_interface: eth0
-  notify: start OpenVPN Network
+  notify: start openvpn
 
 - name: Ensure {{ proto }} port {{ server_port }} is forwarded
   iptables:
