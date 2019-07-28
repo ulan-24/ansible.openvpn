@@ -242,6 +242,7 @@ tls-crypt {{ server_home }}/{{ org }}/ta.key
 {% if proto == "tcp" %}
 # Avoid packet drop from output saturation (default: 64)
 tcp-queue-limit {{ vpn_tcp_queue_limit }}
+bcast-buffers {{ vpn_bcast_buffers }}
 {% endif %}
 
 # Select a cryptographic cipher.
