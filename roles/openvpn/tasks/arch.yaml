@@ -35,7 +35,7 @@
     owner: root
     group: root
     backup: yes
-  notify: restart OpenVPN
+  notify: restart openvpn
   tags: [vpnconfig]
 
 - name: Add resolve-conf update script
