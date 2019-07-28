@@ -1,12 +1,32 @@
-- name: Check if easy-rsa and bash is installed
-  pacman:
-   name:  easy-rsa
-   state: present
-   update_cache: true
+---
+- name: Send email with attached OpenVPN client profile
+  mail:
+    host: "{{ mailhost }}"
+    port: "{{ mailport }}"
+    secure: "{{ mailsecure }}"
+    subtype: plain
+    from: "OrgVPN <vpn@{{ maildomain }}>"
+    to: "<{{ mailto }}>"
+    subject: "{{ mailsubject }}"
+    body: "Hello,
 
-- name: Generate Client certificate and Private key
-  # when: # make CA success
-  shell: easyrsa --batch build-client-full {{ client_name }} nopass
-  args:
-    chdir: {{ ca_dir }}
-    executable: /bin/bash
+
+    Your Org OpenVPN client profile is embedded into this email. Save the contents with a
+    .ovpn extension to a file like openvpn-client.ovpn so the profile can be imported into supported OpenVPN desktop and mobile clients.
+
+
+    Cheers,
+
+    VPN staff
+
+    vpn@example.email
+
+
+    ------copy below------
+
+
+
+          {{ lookup('template', '{{ mailtemplate }}') }}
+          "
+  tags: email
+  when: inventory_hostname in groups['vpn_primary']
