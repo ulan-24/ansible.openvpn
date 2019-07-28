@@ -1,27 +1,36 @@
 ---
-- name: Stage CA cert locally
+- name: Stage Certificate Authority (CA) cert and Hash-based Message Authentication Code (HMAC) key locally
   fetch:
-    src: '{{ server_home }}/{{ org }}/ca.crt'
-    dest: '/tmp/ca.crt'
-    flat: true
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    flat: yes
+  with_items:
+    - { src: '{{ server_home }}/{{ org }}/ca.crt', dest: '/tmp/ca.crt' }
+    - { src: '{{ server_home }}/{{ org }}/ta.key', dest: '/tmp/ta.key' }
   changed_when: false
   ignore_errors: true
   when: inventory_hostname in groups['vpn_primary']
 
-- name: Transfer staged CA cert to remote OpenVPN backup hosts
+- name: Transfer staged CA cert and HAMC key files to {{ server_home }}/{{ org }}
   copy:
-    src: '/tmp/ca.crt'
-    dest: '{{ server_home }}/{{ org }}/ca.crt'
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
     mode: '0600'
     force: no
+  with_items:
+    - { src: '/tmp/ca.crt', dest: '{{ server_home }}/{{ org }}/ca.crt' }
+    - { src: '/tmp/ta.key', dest: '{{ server_home }}/{{ org }}/ta.key' }
   ignore_errors: true
   when: inventory_hostname in groups['vpn_backup']
 
-- name: Remove locally staged ca.crt
+- name: Remove locally staged ca.crt and ta.key
   file:
-    path: '/tmp/ca.crt'
+    path: '{{ item }}'
     state: absent
     force: no
+  with_items:
+    - '/tmp/ca.crt'
+    - '/tmp/ta.key'
   ignore_errors: true
   changed_when: false
   delegate_to: localhost
