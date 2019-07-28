@@ -53,12 +53,22 @@ ca_dir: "/etc/easy-rsa"
 server_key: "{{ ca_dir }}/pki/private/{{ server_name }}.key"
 transfer_to_alt_hosts: false   # if using more than one OpenVN host
 # network (default: ufw)
-iptables_enable: False
-ufw_enable: True
-# client
-client_enable: false
-client_name: vpn
+iptables_enable: false
+ufw_enable: true
 # DNS
 push_dns:
   - 208.67.222.222
   - 208.67.220.220
+
+# client/smtp (email vpn client profile)
+client_enable: true
+client_remote_vpn_ip:
+  - vpn_ip_or_fqdn
+  - vpn2_ip_or_fqdn
+mailto: "someone@domain.email"
+mailhost: "localhost"
+maildomain: "mydomain.email"
+mailport: 587
+mailsecure: starttls
+mailsubject: "{{ key_altnames }}: OpenVPN client profile"
+mailtemplate: "openvpn-{{ org }}.ovpn.j2"
