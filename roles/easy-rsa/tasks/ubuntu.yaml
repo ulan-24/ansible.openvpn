@@ -19,7 +19,7 @@
 
 - name: Add Certicate Variables
   template:
-    src: vars-ubuntu.j2
+    src: vars.j2
     dest: "{{ ca_dir }}/vars"
     owner: root
     group: root

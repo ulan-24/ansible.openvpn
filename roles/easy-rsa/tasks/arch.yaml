@@ -7,7 +7,7 @@
 
 - name: Load X509 certificate variables
   template:
-    src: vars-arch.j2
+    src: vars.j2
     dest: '{{ ca_dir }}/vars'
     owner: root
     group: root
