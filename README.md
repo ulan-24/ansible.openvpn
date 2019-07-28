@@ -55,7 +55,7 @@ Ansible Playbook for deploying OpenVPN on Ubuntu and Arch Hosts with LDAP authen
 LDAP auth is enabled by default. The OpenVPN client file `openvpn-client.ovpn` can be imported into a mobile/desktop app which will prompt for the VPN user's LDAP credentials. An OpenVPN LDAP schema can be found in `roles/openvpn/files/ldap/openvpn-ldap.schema`. 
 
 ### Client
-By default this Playbook uses LDAP auth over certificate based authentication. While using LDAP auth the client `openvpn-client.ovpn` file only requires the CA cert and tls-crypt key. One nice advantage of using LDAP auth with OpenVPN is that creating unique client configs is not necessary. The same client config can be distributed to VPN users.
+By default this Playbook uses LDAP auth rather than certificate based authentication. While using LDAP auth the client `openvpn-client.ovpn` file only requires the CA cert and tls-crypt key. One nice advantage of using LDAP auth with OpenVPN is that creating unique client configs is not necessary. The same client config can be distributed to VPN users.
 
 ###### Notes
 - To have the EasyRSA role generate a new PKI, Certificate Authority (CA) and Server certs/keys, the `pki` directory within `/etc/easyrsa/` must not be present. The role will not overwrite an existing PKI and related files.
