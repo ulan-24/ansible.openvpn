@@ -18,7 +18,7 @@ Ansible Playbook for deploying OpenVPN on Ubuntu and Arch Hosts with LDAP authen
   - OpenVPN server certificate and private key
   - Diffie-Hellman (DH) parameters key
   - Hash-based Message Authentication Code (HMAC) key
-  - **Optional**: transfer CA cert and HMAC key to alt/backup VPN host(s)
+  - **Optional**: transfer CA cert and HMAC key to other secondary/backup OpenVPN host(s)
 
 - **network** (default: UFW or iptables)
   - Enables NAT forwarding
