@@ -11,7 +11,7 @@
   ignore_errors: true
   when: inventory_hostname in groups['vpn_primary']
 
-- name: Transfer staged CA cert and HAMC key files to {{ server_home }}/{{ org }}
+- name: Transfer staged CA cert and HMAC key files to {{ server_home }}/{{ org }}
   copy:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
