@@ -66,6 +66,5 @@ By default this Playbook uses LDAP auth over certificate based authentication. W
 
 ### TODO
 - MFA/YubiKey support
-- Email client config to VPN user
 - Handle more OS families
 - Handle `update-systemd-resolved` for unix clients
