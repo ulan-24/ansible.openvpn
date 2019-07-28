@@ -26,7 +26,7 @@ Ansible Playbook for deploying OpenVPN on Ubuntu and Arch Hosts with LDAP authen
   - Starts OpenVPN network/service
 
 - **client**
-  - Generates OpenVPN client `.ovpn` profile using a template
+  - Generates OpenVPN client `.ovpn` profile from template
   - Sends an email to the OpenVPN user with the client profile for desktop/mobile import
   - Retrieves OpenDNS config pushed from OpenVPN server
 
