@@ -1,0 +1,29 @@
+client
+dev {{ dev }}
+proto {{ proto }}
+{% for ip in client_remote_vpn_ip %}
+remote {{ ip }} {{ server_port }}
+{% endfor %}
+resolv-retry 10
+nobind
+persist-key
+persist-tun
+resolv-retry infinite
+cipher {{ vpn_cipher }}
+auth {{ vpn_auth }}
+tls-client
+tls-version-min {{ vpn_tls_version_min }}
+tls-cipher {{ vpn_tls_cipher }}
+remote-cert-tls server
+auth-user-pass
+auth-retry interact
+comp-lzo
+verb {{ vpn_verb }}
+reneg-sec 0
+setenv CLIENT_CERT 0
+
+<ca>
+</ca>
+
+<tls-crypt>
+</tls-crypt>
