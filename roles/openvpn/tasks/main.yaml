@@ -1,7 +1,8 @@
 ---
-- name: Setup OpenVPN
+- name: Setting up OpenVPN on Arch
   include_tasks: arch.yaml
   when: ansible_os_family|lower == 'archlinux'
 
-- include_tasks: ubuntu.yaml
+- name: Setting up OpenVPN on Ubuntu
+  include_tasks: ubuntu.yaml
   when: ansible_os_family|lower == 'debian'
