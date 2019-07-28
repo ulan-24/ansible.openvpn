@@ -22,7 +22,7 @@ Ansible Playbook for deploying OpenVPN on Ubuntu and Arch Hosts with LDAP authen
 
 - **network** (default: UFW or iptables)
   - Enables NAT forwarding
-  - Port forward OpenVPN (default proto: tcp)
+  - Port forward OpenVPN (default proto: `tcp`)
   - Starts OpenVPN network/service
 
 - **client**
