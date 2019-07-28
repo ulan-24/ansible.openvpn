@@ -57,6 +57,7 @@
     dest: "{{ server_home }}/{{ org }}/ca.crt"
     remote_src: yes
     mode: '0600'
+  ignore_errors: yes
 
 - name: Transfer CA certificate to alt VPN hosts
   include: remote.yaml
