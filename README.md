@@ -24,15 +24,20 @@ Ansible Playbook for deploying OpenVPN on Ubuntu and Arch Hosts with LDAP authen
   - Port forward OpenVPN (default proto: tcp)
   - Starts OpenVPN network/service
 
+- **client**
+  - Generates OpenVPN client `.ovpn` profile using a template
+  - Sends an email to the OpenVPN user with the client profile for desktop/mobile import
+
 ### Tags (in order of Execution)
   - `openvpn`, `vpnconfig`, `ldap`
   - `rsa`
   - `network`
-  - `client`
+  - `client`, `email`
 
 ### Execution
 - Update the global variables in `group_vars/all` for your own VPN server environment.
 - Update the host_vars variable file for each OpenVPN host with your host-specific environment.
+- Optional: Use vpn virtualenv `mkvirtualenv mailstack; pip install -r requirements.txt`
 - Execute the playbook
 
   `ansible-playbook [options] vpn.yaml`
