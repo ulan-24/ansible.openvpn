@@ -63,7 +63,7 @@ LDAP auth is enabled by default. The OpenVPN client file `openvpn-client.ovpn` c
 By default this Playbook uses LDAP auth rather than certificate based authentication. While using LDAP auth the client `openvpn-client.ovpn` file only requires the CA cert and tls-crypt key. One nice advantage of using LDAP auth with OpenVPN is that creating unique client configs is not necessary. The same client config can be distributed to VPN users.
 
 ### Email
-The OpenVPN client config profile can be emailed to the VPN user. The client profile is generated using a template so the appropriate configuration and any number of VPN servers can be imported by desktop and mobile apps.
+The OpenVPN client config profile can be emailed to the VPN user. Update the recipient's email address in `vpn.yaml` and ensure client is enabled from `group_vars/all`. The client profile is generated using a template so the appropriate configuration and any number of VPN servers can be imported by desktop and mobile apps.
 
 ###### Notes
 - To have the EasyRSA role generate a new PKI, Certificate Authority (CA) and Server certs/keys, the `pki` directory within `/etc/easyrsa/` must not be present. The role will not overwrite an existing PKI and related files.
