@@ -70,11 +70,11 @@ push_dns:
 
 # Client/SMTP (email VPN client profile)
 client_enable: true
-client_send_config_to: "someone@gmail.com"
+client_send_config_to: "{{ send_client_profile_to }}"
 client_remote_vpn_ip:
   - vpn_ip_or_fqdn
   - vpn2_ip_or_fqdn
-mailto: "someone@domain.email"
+mailto: "{{ client_send_config_to }}"
 mailname: "MyVPN"
 mailfrom: "vpn@domain.email"
 mailhost: "localhost"
