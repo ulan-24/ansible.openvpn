@@ -38,7 +38,7 @@ Ansible Playbook for deploying OpenVPN on Ubuntu and Arch Hosts with LDAP authen
 
 ### Execution
 - Update the global variables in `group_vars/all` for your own VPN server environment.
-- Update the host_vars variable file for each OpenVPN host with your host-specific environment.
+- Update the `host_vars` variable file for each OpenVPN server with your host-specific environment.
 - **Recommended**: Set up vpn virtualenv `mkvirtualenv vpn; pip install -r requirements.txt`
 - Execute the playbook
 
@@ -48,15 +48,22 @@ Ansible Playbook for deploying OpenVPN on Ubuntu and Arch Hosts with LDAP authen
   
   `ansible-playbook [options] --tags "openvpn,rsa" vpn.yaml`
 
+- Execute sending client profile
+
+  `ansible-playbook [options] --tags "client,email" vpn.yaml`
+
 - Exclude a role
 
-  `ansible-playbook [options] --skip-tags "client"`
+  `ansible-playbook [options] --skip-tags "client"` vpn.yaml
 
 ### LDAP
 LDAP auth is enabled by default. The OpenVPN client file `openvpn-client.ovpn` can be imported into a mobile/desktop app which will prompt for the VPN user's LDAP credentials. An OpenVPN LDAP schema can be found in `roles/openvpn/files/ldap/openvpn-ldap.schema`. 
 
 ### Client
 By default this Playbook uses LDAP auth rather than certificate based authentication. While using LDAP auth the client `openvpn-client.ovpn` file only requires the CA cert and tls-crypt key. One nice advantage of using LDAP auth with OpenVPN is that creating unique client configs is not necessary. The same client config can be distributed to VPN users.
+
+### Email
+The OpenVPN client config profile can be emailed to the VPN user. The client profile is generated using a template so the appropriate configuration and any number of VPN servers can be imported by desktop and mobile apps.
 
 ###### Notes
 - To have the EasyRSA role generate a new PKI, Certificate Authority (CA) and Server certs/keys, the `pki` directory within `/etc/easyrsa/` must not be present. The role will not overwrite an existing PKI and related files.
