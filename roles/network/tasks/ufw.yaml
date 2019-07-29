@@ -25,7 +25,9 @@
     block: "{{ lookup('template', 'ufw-before.txt.j2') }}"
     marker: "# {mark} ANSIBLE MANAGED BLOCK: NAT"
     insertbefore: "^# Don't delete these required lines"
-  notify: restart ufw
+  notify:
+    - restart ufw
+    - start openvpn
 
 - name: Ensure OpenVPN {{ proto }} port 1194 is open
   ufw:
