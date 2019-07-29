@@ -12,7 +12,7 @@
     owner: root
     group: root
 
-- name: Ensure PKI directory exists
+- name: Check if existing PKI directory exists
   stat:
     path: '{{ ca_dir }}/pki'
   register: pki_result
