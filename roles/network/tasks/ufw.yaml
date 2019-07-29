@@ -29,7 +29,7 @@
     - restart ufw
     - start openvpn
 
-- name: Ensure OpenVPN {{ proto }} port 1194 is open
+- name: Ensure OpenVPN {{ proto }} port {{ server_port }} is open
   ufw:
     rule: allow
     port: "{{ server_port }}"
