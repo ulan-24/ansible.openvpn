@@ -66,7 +66,7 @@ By default this Playbook uses LDAP auth rather than certificate based authentica
 The OpenVPN client config profile can be emailed to the VPN user. Update the recipient's email address in `vpn.yaml` and ensure client is enabled from `group_vars/all`. The client profile is generated using a template so the appropriate configuration and any number of VPN servers can be imported by desktop and mobile apps.
 
 ###### Notes
-- To have the EasyRSA role generate a new PKI, Certificate Authority (CA) and Server certs/keys, the `pki` directory within `/etc/easyrsa/` must not be present. The role will not overwrite an existing PKI and related files.
+- To have the `easy-rsa` role generate a new PKI, Certificate Authority (CA) and Server certs/keys, the `pki` directory within `/etc/easyrsa/` must not be present. The role will not overwrite an existing PKI and related files.
 
 - Currently works on remote hosts running os-families:
   - ArchLinux: Arch Linux
