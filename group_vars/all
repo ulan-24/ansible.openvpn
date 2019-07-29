@@ -1,12 +1,13 @@
 ---
-# server info
+# Server info
 domain: example.net
 proto: tcp # udp / tcp
 server_port: 1194  # 443/ 80 / 1194 etc.
 dev:  tun  # tun, tap
 org: exampleorg
 server_home: '/etc/openvpn'
-# server config
+
+# Server config
 vpn_cipher: "AES-256-CBC"
 vpn_auth: "SHA512"
 vpn_tls_server: "tls-server"
@@ -18,7 +19,8 @@ vpn_max_clients: 20
 vpn_tcp_queue_limit: 4096
 vpn_bcast_buffers: 4096
 vpn_enable_management_interface: false
-# LDAP
+
+# LDAP server config
 vpn_enable_ldap: true
 ldap_timeout: 15
 ldap_enable_tls: yes
@@ -31,11 +33,18 @@ ldap_group_match_full_dn: true
 ldap_group_base_dn: "ou=Groups,dc=example,dc=net"
 ldap_group_filter: '(cn=vpn-users)'
 ldap_member_attribute: 'member'
-# logs
+
+# Logs
 vpn_status_log: "/var/log/openvpn/openvpn-status.log"
 vpn_log: "/var/log/openvpn/openvpn.log"
 vpn_verb: 4 # reasonable for general usage
-# cert info
+
+# Easy-RSA
+ca_dir: "/etc/easy-rsa"
+server_key: "{{ ca_dir }}/pki/private/{{ server_name }}.key"
+transfer_to_alt_hosts: false   # if using more than one OpenVN host
+
+# X509 certificate info
 key_country: US
 key_province: California
 key_city: San Francisco
@@ -49,24 +58,25 @@ key_size: 2048 # 2048 / 4096
 cert_expire: 3650 # expire certs in?
 ca_expire: 3650 # expire root CA ?
 algorithm: rsa # ec / rsa
-# easy-rsa
-ca_dir: "/etc/easy-rsa"
-server_key: "{{ ca_dir }}/pki/private/{{ server_name }}.key"
-transfer_to_alt_hosts: false   # if using more than one OpenVN host
-# network (default: ufw)
+
+# Network (default: ufw)
 iptables_enable: false
 ufw_enable: true
+
 # DNS
 push_dns:
   - 208.67.222.222
   - 208.67.220.220
 
-# client/smtp (email vpn client profile)
+# Client/SMTP (email VPN client profile)
 client_enable: true
+client_send_config_to: "someone@gmail.com"
 client_remote_vpn_ip:
   - vpn_ip_or_fqdn
   - vpn2_ip_or_fqdn
 mailto: "someone@domain.email"
+mailname: "MyVPN"
+mailfrom: "vpn@domain.email"
 mailhost: "localhost"
 maildomain: "mydomain.email"
 mailport: 587
