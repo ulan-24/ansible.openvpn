@@ -34,7 +34,7 @@
     dest: "{{ server_home }}/server/server.conf"
     owner: root
     group: root
-    backup: yes
+    backup: no
   notify: restart openvpn
   tags: [vpnconfig]
 
