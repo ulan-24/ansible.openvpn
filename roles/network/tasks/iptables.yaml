@@ -12,7 +12,7 @@
   iptables:
     chain: INPUT
     protocol: tcp
-    destination_port: "{{ port }}"
+    destination_port: "{{ server_port }}"
     ctstate: NEW
     syn: match
     jump: ACCEPT
