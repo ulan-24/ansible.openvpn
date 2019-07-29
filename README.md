@@ -70,7 +70,7 @@ The OpenVPN client config profile can be emailed to the VPN user. Update the rec
 
 - Currently works on remote hosts running os-families:
   - ArchLinux: Arch Linux
-  - Debian: Ubuntu
+  - Debian: Ubuntu (needs updated testing)
 
 ### TODO
 - MFA/YubiKey support
