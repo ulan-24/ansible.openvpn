@@ -5,13 +5,13 @@
     port: "{{ mailport }}"
     secure: "{{ mailsecure }}"
     subtype: plain
-    from: "OrgVPN <vpn@{{ maildomain }}>"
+    from: "{{ mailname }} <{{ mailfrom }}>"
     to: "<{{ mailto }}>"
     subject: "{{ mailsubject }}"
     body: "Hello,
 
 
-    Your Org OpenVPN client profile is embedded into this email. Save the contents with a
+    Your {{ key_org }} OpenVPN client profile is embedded into this email. Save the contents with a
     .ovpn extension to a file like openvpn-client.ovpn so the profile can be imported into supported OpenVPN desktop and mobile clients.
 
 
@@ -19,7 +19,7 @@
 
     VPN staff
 
-    vpn@example.email
+    {{ mailfrom }}
 
 
     ------copy below------
