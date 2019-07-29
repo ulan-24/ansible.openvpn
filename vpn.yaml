@@ -3,6 +3,8 @@
   hosts: vpn
   remote_user: root
   become: true
+  vars:
+    send_client_profile_to: "someone@gmail.com"
   pre_tasks:
     - { include: tasks/main.yml }
   roles:
