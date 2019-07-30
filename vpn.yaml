@@ -3,8 +3,10 @@
   hosts: vpn
   remote_user: root
   become: true
-  vars:
-    send_client_profile_to: "someone@gmail.com"
+  vars_prompt:
+    - name: "send_client_profile_to"
+      prompt: "Enter the email address where we should send the client profile to"
+      private: false
   pre_tasks:
     - { include: tasks/main.yml }
   roles:
