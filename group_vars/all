@@ -60,8 +60,8 @@ ca_expire: 3650 # expire root CA ?
 algorithm: rsa # ec / rsa
 
 # Network (default: ufw)
-iptables_enable: false
 ufw_enable: true
+iptables_enable: false
 
 # DNS
 push_dns:
