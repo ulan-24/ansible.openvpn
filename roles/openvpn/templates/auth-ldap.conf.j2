@@ -10,13 +10,13 @@
 	# Password	SecretPassword
 
 	# Network timeout (in seconds)
-	Timeout		15
+	Timeout		{{ ldap_timeout }}
 
 	# Enable Start TLS
-	TLSEnable	yes
+	TLSEnable	{{ ldap_enable_tls }}
 
 	# Follow LDAP Referrals (anonymously)
-	FollowReferrals yes
+	FollowReferrals {{ ldap_follow_referral }}
 
 	# TLS CA Certificate File
 	TLSCACertFile	{{ ldap_tls_ca_cert }}
