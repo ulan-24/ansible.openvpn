@@ -200,6 +200,9 @@ push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS {{ dns }}"
 {% endfor %}
 
+# Prevent DNS Leakage
+push "dhcp-option DOMAIN-ROUTE ."
+
 #
 # Uncomment this directive to allow different
 # clients to be able to "see" each other.
