@@ -23,8 +23,8 @@ vpn_enable_management_interface: false
 # LDAP server config
 vpn_enable_ldap: true
 ldap_timeout: 15
-ldap_enable_tls: yes
-ldap_follow_referral: yes
+ldap_enable_tls: "yes"
+ldap_follow_referral: "yes"
 ldap_tls_ca_cert: "/etc/ssl/certs/ca-certificates.crt"
 ldap_user_base_dn: "ou=People,dc=example,dc=net"
 ldap_user_filter: '(&(uid=%u)(openvpnEnabled=TRUE))'
