@@ -30,7 +30,7 @@ ldap_user_base_dn: "ou=People,dc=example,dc=net"
 ldap_user_filter: '(&(uid=%u)(openvpnEnabled=TRUE))'
 ldap_require_group: true
 ldap_group_match_full_dn: true
-ldap_group_base_dn: "ou=Groups,dc=example,dc=net"
+ldap_group_base_dn: "ou=groups,dc=pypestream,dc=com"
 ldap_group_filter: '(cn=vpn-users)'
 ldap_member_attribute: 'member'
 
@@ -46,10 +46,10 @@ transfer_to_alt_hosts: false   # transfers ca.crt and ta.key to alt/backup serve
 
 # X509 certificate info
 key_country: US
-key_province: California
-key_city: San Francisco
-key_org: ExampleOrg
-key_email: vpn@example.email
+key_province: New York
+key_city: New York
+key_org: Pypestream
+key_email: vpn@pypestream.com
 key_cn: "{{ server_name }}" # common name
 key_altnames: My Org VPN Network
 key_name: "{{ server_name }}"
@@ -76,7 +76,7 @@ client_remote_vpn_ip:
   - vpn2_ip_or_fqdn
 mailto: "{{ client_send_config_to }}"
 mailname: "MyVPN"
-mailfrom: "vpn@domain.email"
+mailfrom: "umanas@pypestream.com"
 mailhost: "localhost"
 maildomain: "mydomain.email"
 mailport: 587
